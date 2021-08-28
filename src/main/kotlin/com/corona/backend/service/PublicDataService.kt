@@ -26,6 +26,9 @@ class PublicDataService(
 
     @Cacheable(value = ["Infection"], key = "#date")
     fun getInfection(date: LocalDate): Infection {
+        date.minusDays(1)
+        date
+
         val xml = publicDataClient.getData(
             url = infectionUrl,
             queryParam = makeDateQueryParams(
