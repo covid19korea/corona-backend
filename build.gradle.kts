@@ -53,8 +53,7 @@ dependencies {
     // JACKSON
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonXmlVersion")
     // SWAGGER
-    implementation("io.springfox:springfox-swagger2:$springFoxVersion")
-    implementation("io.springfox:springfox-swagger-ui:$springFoxVersion")
+    implementation("io.springfox:springfox-boot-starter:$springFoxVersion")
     // ETC
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
