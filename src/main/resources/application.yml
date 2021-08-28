@@ -13,3 +13,11 @@ open-api:
     infection-region: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson
     inoculation: https://nip.kdca.go.kr/irgd/cov19stats.do?list=all
     inoculation-region: https://nip.kdca.go.kr/irgd/cov19stats.do?list=sido
+
+log:
+  level: ERROR
+  slack:
+    enabled: true
+    webHookUrl: ${SLACK_WEBHOOK_URL}
+    channel: ${SLACK_WEBHOOK_CHANNEL}
+
