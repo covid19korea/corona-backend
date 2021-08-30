@@ -11,8 +11,8 @@ permissions:
     owner: ubuntu
 hooks:
   BeforeInstall:
-    - location: scripts/before-install.sh
+    - location: scripts/before-install-dev.sh
   AfterInstall:
-    - location: scripts/after-install.sh
+    - location: scripts/after-install-dev.sh
   ApplicationStart:
-    - location: scripts/application-start.sh
+    - location: scripts/application-start-dev.sh
