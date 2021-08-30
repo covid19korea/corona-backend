@@ -1,0 +1,73 @@
+name: corona-backend prd server CD
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: build and zip
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+    env:
+      OPEN_API_KEY: ${{secrets.OPEN_API_KEY}}
+      PORT_NUM: ${{secrets.PORT_NUM}}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew bootJar
+
+      - name: Make zip file
+        run: zip -r corona-backend-prd.zip build/libs appspec.yml scripts
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: S3 Upload
+        run: aws s3 cp corona-backend-prd.zip s3://${{secrets.AWS_BUCKET}}
+
+  deploy:
+    needs: build
+    name: deploy to ec2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name corona-backend-prd --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name corona-backend-prd-deploy-group --s3-location bucket=${{secrets.AWS_BUCKET}},bundleType=zip,key=corona-backend-prd.zip --region ${{secrets.AWS_REGION}} --file-exists-behavior OVERWRITE
+
