@@ -11,6 +11,6 @@ class TestController {
     @ApiOperation("에러봇 테스트")
     @PostMapping("/test")
     fun test(@RequestBody dto: Dto) {
-        throw IllegalArgumentException("test value is null")
+        throw IllegalArgumentException("Errorbot Test")
     }
 }
