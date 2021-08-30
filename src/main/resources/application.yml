@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: ${PORT_NUM}
   servlet:
     encoding:
       charset: UTF-8
@@ -20,4 +20,3 @@ log:
     enabled: true
     webHookUrl: ${SLACK_WEBHOOK_URL}
     channel: ${SLACK_WEBHOOK_CHANNEL}
-
