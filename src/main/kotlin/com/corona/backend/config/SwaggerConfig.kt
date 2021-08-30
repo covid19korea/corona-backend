@@ -19,7 +19,6 @@ class SwaggerConfig {
         return Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .groupName("V1")
-            .host("localhost")
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.corona.backend.controller"))
             .paths(PathSelectors.any())
