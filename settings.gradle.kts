@@ -3,6 +3,11 @@ rootProject.name = "backend"
 val springFoxVersion: String by settings
 val junitVersion: String by settings
 val jacksonXmlVersion: String by settings
+val slackApiClientVersion: String by settings
+val okHttp3Version: String by settings
+val userAgentUtilVersion: String by settings
+val slackWebhookVersion: String by settings
+val apacheCommonsIOVersion: String by settings
 
 pluginManagement {
     val kotlinVersion: String by settings

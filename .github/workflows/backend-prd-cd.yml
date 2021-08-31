@@ -1,11 +1,11 @@
-name: corona-backend dev server CD
+name: corona-backend prd server CD
 
 on:
   pull_request:
     types: [ closed ]
-    branches: [ develop ]
+    branches: [ master ]
   push:
-    branches: [ develop ]
+    branches: [ master ]
 
 jobs:
 
@@ -43,7 +43,7 @@ jobs:
         run: ./gradlew bootJar
 
       - name: Make zip file
-        run: zip -r corona-backend-dev.zip build/libs appspec.yml scripts
+        run: zip -r corona-backend-prd.zip build/libs appspec.yml scripts
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -53,7 +53,7 @@ jobs:
           aws-region: ${{secrets.AWS_REGION}}
 
       - name: S3 Upload
-        run: aws s3 cp corona-backend-dev.zip s3://${{secrets.AWS_BUCKET}}
+        run: aws s3 cp corona-backend-prd.zip s3://${{secrets.AWS_BUCKET}}
 
   deploy:
     needs: build
@@ -69,5 +69,5 @@ jobs:
           aws-region: ${{secrets.AWS_REGION}}
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name corona-backend-dev --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name corona-backend-dev-deploy-group --s3-location bucket=${{secrets.AWS_BUCKET}},bundleType=zip,key=corona-backend-dev.zip --region ${{secrets.AWS_REGION}} --file-exists-behavior OVERWRITE
+        run: aws deploy create-deployment --application-name corona-backend-prd --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name corona-backend-prd-deploy-group --s3-location bucket=${{secrets.AWS_BUCKET}},bundleType=zip,key=corona-backend-prd.zip --region ${{secrets.AWS_REGION}} --file-exists-behavior OVERWRITE
 

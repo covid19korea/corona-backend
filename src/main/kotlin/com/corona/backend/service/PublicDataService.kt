@@ -5,6 +5,7 @@ import com.corona.backend.infra.publicdata.xml.infection.Infection
 import com.corona.backend.infra.publicdata.xml.infectionRegion.InfectionRegion
 import com.corona.backend.infra.publicdata.xml.inoculation.Inoculation
 import com.corona.backend.infra.publicdata.xml.inoculationRegion.InoculationRegion
+import com.corona.backend.util.DateUtil
 import com.corona.backend.util.XmlParser
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
@@ -25,11 +26,14 @@ class PublicDataService(
 
     @Cacheable(value = ["Infection"], key = "#date")
     fun getInfection(date: LocalDate): Infection {
+        date.minusDays(1)
+        date
+
         val xml = publicDataClient.getData(
             url = infectionUrl,
             queryParam = makeDateQueryParams(
-                startDate = date.minusDays(2),
-                endDate = date.minusDays(1),
+                startDate = date.minusDays(1),
+                endDate = date,
             )
         )
         return xmlParser.parse(xml, Infection::class.java)
@@ -40,8 +44,8 @@ class PublicDataService(
         val xml = publicDataClient.getData(
             url = infectionRegionUrl,
             queryParam = makeDateQueryParams(
-                startDate = date.minusDays(1),
-                endDate = date.minusDays(1),
+                startDate = date,
+                endDate = date,
             )
         )
         return xmlParser.parse(xml, InfectionRegion::class.java)
@@ -49,11 +53,9 @@ class PublicDataService(
 
     private fun makeDateQueryParams(startDate: LocalDate, endDate: LocalDate) = LinkedMultiValueMap<String, String>()
         .apply {
-            add("startCreateDt", convertDate2QueryParam(startDate))
-            add("endCreateDt", convertDate2QueryParam(endDate))
+            add("startCreateDt", DateUtil.convert2QueryParam(startDate))
+            add("endCreateDt", DateUtil.convert2QueryParam(endDate))
         }
-
-    private fun convertDate2QueryParam(date: LocalDate) = date.toString().replace("-", "")
 
     @Cacheable(value = ["Inoculation"])
     fun getInoculation(): Inoculation {

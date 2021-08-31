@@ -3,6 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val springFoxVersion: String by project
 val junitVersion: String by project
 val jacksonXmlVersion: String by project
+val slackApiClientVersion: String by project
+val okHttp3Version: String by project
+val userAgentUtilVersion: String by project
+val slackWebhookVersion: String by project
+val apacheCommonsIOVersion: String by project
 
 plugins {
     id("org.springframework.boot")
@@ -36,13 +41,19 @@ dependencies {
     // WEBCLIENT
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    // IO
+    implementation("commons-io:commons-io:$apacheCommonsIOVersion")
     // TEST
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    // SLACK WEBHOOK
+    implementation("com.slack.api:slack-api-client:$slackApiClientVersion")
+    implementation("com.squareup.okhttp3:okhttp:$okHttp3Version")
+    implementation("eu.bitwalker:UserAgentUtils:$userAgentUtilVersion")
+    implementation("net.gpedro.integrations.slack:slack-webhook:$slackWebhookVersion")
     // JACKSON
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonXmlVersion")
     // SWAGGER
-    implementation("io.springfox:springfox-swagger2:$springFoxVersion")
-    implementation("io.springfox:springfox-swagger-ui:$springFoxVersion")
+    implementation("io.springfox:springfox-boot-starter:$springFoxVersion")
     // ETC
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
