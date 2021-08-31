@@ -16,3 +16,4 @@ hooks:
     - location: scripts/after-install-dev.sh
   ApplicationStart:
     - location: scripts/application-start-dev.sh
+
