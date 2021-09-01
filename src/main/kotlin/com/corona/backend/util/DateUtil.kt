@@ -6,15 +6,17 @@ import java.time.ZonedDateTime
 
 object DateUtil {
 
+    private const val SEOUL_TIME_ZONE = "Asia/Seoul"
+
     fun getDate(): LocalDate {
-        val nowSeoul = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+        val nowSeoul = ZonedDateTime.now(ZoneId.of(SEOUL_TIME_ZONE))
         return if (isYesterday(nowSeoul)) {
-            ZonedDateTime.now(ZoneId.of("Asia/Seoul")).minusDays(1).toLocalDate()
-        } else ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate()
+            ZonedDateTime.now(ZoneId.of(SEOUL_TIME_ZONE)).minusDays(1).toLocalDate()
+        } else ZonedDateTime.now(ZoneId.of(SEOUL_TIME_ZONE)).toLocalDate()
     }
 
     private fun isYesterday(time: ZonedDateTime): Boolean {
-        return (time.hour < 9) || (time.hour == 9 && time.minute < 30)
+        return (time.hour < 10)
     }
 
     fun convert2QueryParam(date: LocalDate) = date.toString().replace("-", "")
