@@ -16,7 +16,7 @@ object DateUtil {
     }
 
     private fun isYesterday(time: ZonedDateTime): Boolean {
-        return (time.hour < 10)
+        return (time.hour < 10) || ((time.hour == 10) && (time.minute < 2))
     }
 
     fun convert2QueryParam(date: LocalDate) = date.toString().replace("-", "")
