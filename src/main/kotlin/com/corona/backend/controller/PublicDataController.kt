@@ -33,7 +33,7 @@ class PublicDataController(
     fun getInfectionRegion(
         @RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") date: LocalDate?
     ): InfectionRegionRes {
-        return InfectionRegionRes.from(publicDataService.getInfectionRegion(date ?: DateUtil.getDate()))
+        return InfectionRegionRes.from(publicDataService.getInfectionRegion(date ?: DateUtil.getDate().minusDays(1)))
     }
 
     @ApiOperation("접종(전국)")
