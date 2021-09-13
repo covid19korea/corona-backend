@@ -10,7 +10,6 @@ import com.corona.backend.infra.publicdata.xml.inoculationRegion.InoculationRegi
 import com.corona.backend.util.DateUtil
 import com.corona.backend.util.XmlParser
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import java.time.LocalDate
@@ -29,13 +28,27 @@ class PublicDataService(
 ) {
 
     fun getInfection(date: LocalDate): Infection {
-
-        val today = infectionRedisRepository.findByIdOrNull(DateUtil.convertToRedisKey(date))
-        if (today != null) {
-            return today.data
-        }
-
-        val yesterday = infectionRedisRepository.findByIdOrNull(DateUtil.convertToRedisKey(date.minusDays(1)))
+        //
+        // val today = infectionRedisRepository.findByIdOrNull(DateUtil.convertToRedisKey(date))
+        // if (today != null) {
+        //     return today.data
+        // }
+        //
+        // val yesterday = infectionRedisRepository.findByIdOrNull(DateUtil.convertToRedisKey(date.minusDays(1)))
+        //
+        // val xml = publicDataClient.getData(
+        //     url = infectionUrl,
+        //     queryParam = makeDateQueryParams(
+        //         startDate = date.minusDays(1),
+        //         endDate = date,
+        //     )
+        // )
+        // val infection = xmlParser.parse(xml, Infection::class.java)
+        // if (infection.body.items.size < 2) {
+        //     return yesterday!!.data
+        // }
+        //
+        // return infection
 
         val xml = publicDataClient.getData(
             url = infectionUrl,
@@ -44,12 +57,7 @@ class PublicDataService(
                 endDate = date,
             )
         )
-        val infection = xmlParser.parse(xml, Infection::class.java)
-        if (infection.body.items.size < 2) {
-            return yesterday!!.data
-        }
-
-        return infection
+        return xmlParser.parse(xml, Infection::class.java)
     }
 
     fun getInfectionRegion(date: LocalDate): InfectionRegion {
