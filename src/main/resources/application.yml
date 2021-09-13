@@ -9,8 +9,6 @@ server:
 open-api:
   key: ${OPEN_API_KEY}
   url:
-    infection: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson
-    infection-region: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson
     inoculation: https://nip.kdca.go.kr/irgd/cov19stats.do?list=all
     inoculation-region: https://nip.kdca.go.kr/irgd/cov19stats.do?list=sido
 

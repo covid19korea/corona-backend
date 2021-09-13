@@ -1,6 +1,7 @@
 package com.corona.backend.domain.infection.res
 
 import com.corona.backend.infra.goodbye_corona.json.InfectionRegion
+import com.corona.backend.util.String2IntegerConverter
 
 data class InfectionRegionRes(
     val list: List<InfectionSido>
@@ -16,19 +17,19 @@ data class InfectionRegionRes(
 
 data class InfectionSido(
     var gubun: String, // 지역
-    var incDec: String, // 오늘 신규 확진자
-    var defCnt: String, // 누적 확진자 수
-    var isolClearCnt: String, // 격리 해제 수
-    var deathCnt: String, // 사망자
+    var incDec: Int, // 오늘 신규 확진자
+    var defCnt: Int, // 누적 확진자 수
+    var isolClearCnt: Int, // 격리 해제 수
+    var deathCnt: Int, // 사망자
 ) {
     companion object {
         fun from(region: InfectionRegion.Region): InfectionSido {
             return InfectionSido(
                 gubun = region.countryName,
-                incDec = region.newCase,
-                defCnt = region.totalCase,
-                isolClearCnt = region.recovered,
-                deathCnt = region.death,
+                incDec = String2IntegerConverter.convert(region.newCase),
+                defCnt = String2IntegerConverter.convert(region.totalCase),
+                isolClearCnt = String2IntegerConverter.convert(region.recovered),
+                deathCnt = String2IntegerConverter.convert(region.death),
             )
         }
     }

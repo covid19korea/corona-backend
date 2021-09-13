@@ -1,7 +1,8 @@
 package com.corona.backend.domain.infection.res
 
-import com.corona.backend.infra.publicdata.xml.infection.Infection
+import com.corona.backend.infra.goodbye_corona.json.Infection
 import com.corona.backend.util.CheckingCounterUtil
+import com.corona.backend.util.InfectionUtil
 import com.corona.backend.util.String2IntegerConverter
 
 data class InfectionRes(
@@ -18,24 +19,7 @@ data class InfectionRes(
     val deathCntUp: Int, // 사망자
 ) {
     companion object {
-        fun from(xml: Infection): InfectionRes {
-            val items = xml.body.items
-
-            return InfectionRes(
-                careCnt = items[0].careCnt,
-                clearCnt = items[0].clearCnt,
-                decideCnt = items[0].decideCnt,
-                examCnt = items[0].examCnt,
-                deathCnt = items[0].deathCnt,
-                careCntUp = items[0].careCnt - items[1].careCnt,
-                clearCntUp = items[0].clearCnt - items[1].clearCnt,
-                decideCntUp = items[0].decideCnt - items[1].decideCnt,
-                examCntUp = items[0].examCnt - items[1].examCnt,
-                deathCntUp = items[0].deathCnt - items[1].deathCnt,
-            )
-        }
-
-        fun from(infection: com.corona.backend.infra.goodbye_corona.json.Infection): InfectionRes {
+        fun from(infection: Infection): InfectionRes {
             return InfectionRes(
                 careCnt = String2IntegerConverter.convert(infection.NowCase),
                 clearCnt = String2IntegerConverter.convert(infection.TodayRecovered),
@@ -44,7 +28,7 @@ data class InfectionRes(
                 deathCnt = String2IntegerConverter.convert(infection.TotalDeath),
                 careCntUp = String2IntegerConverter.convert(infection.TotalCaseBefore),
                 clearCntUp = String2IntegerConverter.convert(infection.TodayRecovered),
-                decideCntUp = 0,
+                decideCntUp = InfectionUtil.getInfectionCount(),
                 examCntUp = CheckingCounterUtil.getCheckingCounter(String2IntegerConverter.convert(infection.checkingCounter)),
                 deathCntUp = String2IntegerConverter.convert(infection.TodayDeath),
             )
