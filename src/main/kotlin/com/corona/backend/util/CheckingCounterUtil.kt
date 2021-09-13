@@ -7,4 +7,8 @@ object CheckingCounterUtil {
     fun getCheckingCounter(todayCheckingCounter: Int): Int {
         return todayCheckingCounter - yesterdayCheckingCounter
     }
+
+    fun setCheckingCounter(checkingCounter: Int) {
+        yesterdayCheckingCounter = checkingCounter
+    }
 }
