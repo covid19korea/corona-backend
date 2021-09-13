@@ -20,4 +20,6 @@ object DateUtil {
     }
 
     fun convert2QueryParam(date: LocalDate) = date.toString().replace("-", "")
+
+    fun convertToRedisKey(date: LocalDate) = date.toString().replace("-", "")
 }
