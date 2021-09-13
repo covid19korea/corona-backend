@@ -22,7 +22,7 @@ data class InfectionRes(
         fun from(infection: Infection): InfectionRes {
             return InfectionRes(
                 careCnt = String2IntegerConverter.convert(infection.NowCase),
-                clearCnt = String2IntegerConverter.convert(infection.TodayRecovered),
+                clearCnt = String2IntegerConverter.convert(infection.TotalRecovered),
                 decideCnt = String2IntegerConverter.convert(infection.TotalCase),
                 examCnt = String2IntegerConverter.convert(infection.checkingCounter),
                 deathCnt = String2IntegerConverter.convert(infection.TotalDeath),
