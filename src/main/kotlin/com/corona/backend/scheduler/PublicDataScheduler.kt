@@ -12,7 +12,7 @@ class PublicDataScheduler(
     private val dataCacher: DataCacher,
 ) {
 
-    @Scheduled(cron = "0 59 1 * * *") // 한국시간기준 오전 9시 59분
+    @Scheduled(cron = "0 59 0 * * *") // 한국시간기준 오전 9시 59분
     fun saveCheckingCount() {
         val infection = dataCacher.getInfection(DateUtil.getDate())
         CheckingCounterUtil.setCheckingCounter(String2IntegerConverter.convert(infection!!.checkingCounter))
