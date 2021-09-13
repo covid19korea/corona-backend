@@ -3,8 +3,6 @@ name: corona-backend build & test CI
 on:
   pull_request:
     branches: [ develop, master ]
-  push:
-    branches: [ develop, master ]
 
 jobs:
   build:
