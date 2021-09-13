@@ -16,7 +16,7 @@ jobs:
     env:
       OPEN_API_KEY: ${{secrets.OPEN_API_KEY}}
       PORT_NUM: ${{secrets.PORT_NUM}}
-
+      REDIS_IP: ${{secrets.REDIS_IP}}
     steps:
       - name: checkout
         uses: actions/checkout@v2

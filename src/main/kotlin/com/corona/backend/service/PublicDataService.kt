@@ -1,5 +1,7 @@
 package com.corona.backend.service
 
+import com.corona.backend.domain.redis.InfectionRedisRepository
+import com.corona.backend.domain.redis.InfectionRegionRedisRepository
 import com.corona.backend.infra.publicdata.PublicDataClient
 import com.corona.backend.infra.publicdata.xml.infection.Infection
 import com.corona.backend.infra.publicdata.xml.infectionRegion.InfectionRegion
@@ -8,7 +10,7 @@ import com.corona.backend.infra.publicdata.xml.inoculationRegion.InoculationRegi
 import com.corona.backend.util.DateUtil
 import com.corona.backend.util.XmlParser
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.cache.annotation.Cacheable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import java.time.LocalDate
@@ -21,13 +23,19 @@ class PublicDataService(
     @Value("\${open-api.url.inoculation-region}") private val inoculationRegionUrl: String,
 
     private val publicDataClient: PublicDataClient,
+    private val infectionRedisRepository: InfectionRedisRepository,
+    private val infectionRegionRedisRepository: InfectionRegionRedisRepository,
     private val xmlParser: XmlParser,
 ) {
 
-    @Cacheable(value = ["Infection"], key = "#date")
     fun getInfection(date: LocalDate): Infection {
-        date.minusDays(1)
-        date
+
+        val today = infectionRedisRepository.findByIdOrNull(DateUtil.convertToRedisKey(date))
+        if (today != null) {
+            return today.data
+        }
+
+        val yesterday = infectionRedisRepository.findByIdOrNull(DateUtil.convertToRedisKey(date.minusDays(1)))
 
         val xml = publicDataClient.getData(
             url = infectionUrl,
@@ -36,10 +44,14 @@ class PublicDataService(
                 endDate = date,
             )
         )
-        return xmlParser.parse(xml, Infection::class.java)
+        val infection = xmlParser.parse(xml, Infection::class.java)
+        if (infection.body.items.size < 2) {
+            return yesterday!!.data
+        }
+
+        return infection
     }
 
-    @Cacheable(value = ["InfectionRegion"], key = "#date")
     fun getInfectionRegion(date: LocalDate): InfectionRegion {
         val xml = publicDataClient.getData(
             url = infectionRegionUrl,
@@ -57,13 +69,11 @@ class PublicDataService(
             add("endCreateDt", DateUtil.convert2QueryParam(endDate))
         }
 
-    @Cacheable(value = ["Inoculation"])
     fun getInoculation(): Inoculation {
         val xml = publicDataClient.getData(inoculationUrl)
         return xmlParser.parse(xml, Inoculation::class.java)
     }
 
-    @Cacheable(value = ["InoculationRegion"])
     fun getInoculationRegion(): InoculationRegion {
         val xml = publicDataClient.getData(inoculationRegionUrl)
         return xmlParser.parse(xml, InoculationRegion::class.java)
