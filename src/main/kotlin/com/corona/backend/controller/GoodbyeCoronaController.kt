@@ -1,7 +1,5 @@
 package com.corona.backend.controller
 
-import com.corona.backend.domain.infection.res.InfectionRegionRes
-import com.corona.backend.domain.infection.res.InfectionRes
 import com.corona.backend.infra.goodbye_corona.json.Infection
 import com.corona.backend.infra.goodbye_corona.json.InfectionRegion
 import com.corona.backend.service.GoodbyeCoronaService
@@ -35,5 +33,4 @@ class GoodbyeCoronaController(
     ): InfectionRegion {
         return goodbyeCoronaService.getInfectionRegion(date ?: DateUtil.getDate())
     }
-
 }
