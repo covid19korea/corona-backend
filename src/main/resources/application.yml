@@ -14,9 +14,19 @@ open-api:
     inoculation: https://nip.kdca.go.kr/irgd/cov19stats.do?list=all
     inoculation-region: https://nip.kdca.go.kr/irgd/cov19stats.do?list=sido
 
+goodbye-api:
+  url:
+    infection: https://api.corona-19.kr/korea/?serviceKey=x8TrC5z7ZWsqlOKEfAwvc6P4YhMo3RVdy
+    infection-region: https://api.corona-19.kr/korea/country/new/?serviceKey=x8TrC5z7ZWsqlOKEfAwvc6P4YhMo3RVdy
+
 log:
   level: ERROR
   slack:
     enabled: true
     webHookUrl: ${SLACK_WEBHOOK_URL}
     channel: ${SLACK_WEBHOOK_CHANNEL}
+
+spring:
+  redis:
+    host: ${REDIS_IP}
+    port: 6379
