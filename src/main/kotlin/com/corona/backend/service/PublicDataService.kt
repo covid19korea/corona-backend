@@ -50,6 +50,8 @@ class PublicDataService(
         //
         // return infection
 
+        date
+
         val xml = publicDataClient.getData(
             url = infectionUrl,
             queryParam = makeDateQueryParams(

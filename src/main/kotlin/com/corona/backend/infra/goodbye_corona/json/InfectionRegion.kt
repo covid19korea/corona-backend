@@ -8,10 +8,12 @@ data class InfectionRegion(
     val busan: Region,
     val daegu: Region,
     val incheon: Region,
+    val gwangju: Region,
     val daejeon: Region,
     val ulsan: Region,
     val sejong: Region,
     val gyeonggi: Region,
+    val gangwon: Region,
     val chungbuk: Region,
     val chungnam: Region,
     val jeonbuk: Region,
@@ -21,6 +23,31 @@ data class InfectionRegion(
     val jeju: Region,
     val quarantine: Region,
 ) {
+
+    fun getList(): MutableList<Region> {
+        return mutableListOf<Region>().apply {
+            add(korea)
+            add(seoul)
+            add(busan)
+            add(daegu)
+            add(incheon)
+            add(gwangju)
+            add(daejeon)
+            add(ulsan)
+            add(sejong)
+            add(gyeonggi)
+            add(gangwon)
+            add(chungbuk)
+            add(chungnam)
+            add(jeonbuk)
+            add(jeonnam)
+            add(gyeongbuk)
+            add(gyeongnam)
+            add(jeju)
+            add(quarantine)
+        }
+    }
+
     data class Region(
         val countryName: String,
         val newCase: String,

@@ -1,17 +1,14 @@
 package com.corona.backend.domain.infection.res
 
-import com.corona.backend.infra.publicdata.xml.infectionRegion.InfectionRegion
-import com.corona.backend.infra.publicdata.xml.infectionRegion.Item
+import com.corona.backend.infra.goodbye_corona.json.InfectionRegion
 
 data class InfectionRegionRes(
     val list: List<InfectionSido>
 ) {
     companion object {
-        fun from(xml: InfectionRegion): InfectionRegionRes {
-            val items = xml.body.items
-
+        fun from(infectionRegion: InfectionRegion): InfectionRegionRes {
             return InfectionRegionRes(
-                items.map { InfectionSido.from(it) }
+                infectionRegion.getList().map { InfectionSido.from(it) }
             )
         }
     }
@@ -20,18 +17,18 @@ data class InfectionRegionRes(
 data class InfectionSido(
     var gubun: String, // 지역
     var incDec: String, // 오늘 신규 확진자
-    var defCnt: Int, // 누적 확진자 수
+    var defCnt: String, // 누적 확진자 수
     var isolClearCnt: String, // 격리 해제 수
-    var deathCnt: Int, // 사망자
+    var deathCnt: String, // 사망자
 ) {
     companion object {
-        fun from(item: Item): InfectionSido {
+        fun from(region: InfectionRegion.Region): InfectionSido {
             return InfectionSido(
-                gubun = item.gubun,
-                incDec = item.incDec,
-                defCnt = item.defCnt,
-                isolClearCnt = item.isolClearCnt,
-                deathCnt = item.deathCnt,
+                gubun = region.countryName,
+                incDec = region.newCase,
+                defCnt = region.totalCase,
+                isolClearCnt = region.recovered,
+                deathCnt = region.death,
             )
         }
     }
