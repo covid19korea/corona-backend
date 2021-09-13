@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @RequestMapping("/v1/data")
 @RestController
@@ -33,13 +32,5 @@ class GoodbyeCoronaController(
         @RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") date: LocalDate?
     ): InfectionRegionRes {
         return InfectionRegionRes.from(goodbyeCoronaService.getInfectionRegion(date ?: DateUtil.getDate()))
-    }
-
-    @GetMapping("/test")
-    fun getDate(): String {
-        val nowSeoul = DateUtil.getDate()
-        val nowAmerica = LocalDateTime.now()
-
-        return "seoul = $nowSeoul, America = $nowAmerica"
     }
 }
