@@ -2,7 +2,7 @@ package com.corona.backend.util
 
 object CheckingCounterUtil {
 
-    var yesterdayCheckingCounter = 910419
+    var yesterdayCheckingCounter = 914400
 
     fun getCheckingCounter(todayCheckingCounter: Int): Int {
         return todayCheckingCounter - yesterdayCheckingCounter
