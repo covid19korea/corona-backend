@@ -18,8 +18,4 @@ object DateUtil {
     private fun isYesterday(time: ZonedDateTime): Boolean {
         return (time.hour < 10) || ((time.hour == 10) && (time.minute < 15))
     }
-
-    fun convert2QueryParam(date: LocalDate) = date.toString().replace("-", "")
-
-    fun convertToRedisKey(date: LocalDate) = date.toString().replace("-", "")
 }
