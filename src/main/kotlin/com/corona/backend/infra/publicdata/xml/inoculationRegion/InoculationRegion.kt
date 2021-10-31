@@ -17,4 +17,6 @@ data class Item(
     var firstTot: Int = 0,
     var secondCnt: Int = 0,
     var secondTot: Int = 0,
+    var thirdCnt: Int = 0,
+    var thirdTot: Int = 0,
 )

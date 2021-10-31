@@ -15,4 +15,5 @@ data class Item(
     var tpcd: String = "",
     var firstCnt: Int = 0,
     var secondCnt: Int = 0,
+    var thirdCnt: Int = 0,
 )

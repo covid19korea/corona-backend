@@ -36,8 +36,6 @@ dependencies {
     // WEB
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    // REDIS
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     // CACHING
     implementation("org.springframework.boot:spring-boot-starter-cache:2.5.3")
     // WEBCLIENT

@@ -23,7 +23,3 @@ log:
     webHookUrl: ${SLACK_WEBHOOK_URL}
     channel: ${SLACK_WEBHOOK_CHANNEL}
 
-spring:
-  redis:
-    host: ${REDIS_IP}
-    port: 6379

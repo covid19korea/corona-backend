@@ -1,7 +1,5 @@
 package com.corona.backend.service
 
-import com.corona.backend.domain.redis.InfectionRedisRepository
-import com.corona.backend.domain.redis.InfectionRegionRedisRepository
 import com.corona.backend.infra.publicdata.PublicDataClient
 import com.corona.backend.infra.publicdata.xml.inoculation.Inoculation
 import com.corona.backend.infra.publicdata.xml.inoculationRegion.InoculationRegion
@@ -18,8 +16,6 @@ class PublicDataService(
     private val dataCacher: DataCacher,
 
     private val publicDataClient: PublicDataClient,
-    private val infectionRedisRepository: InfectionRedisRepository,
-    private val infectionRegionRedisRepository: InfectionRegionRedisRepository,
     private val xmlParser: XmlParser,
 ) {
 
