@@ -7,9 +7,12 @@ server:
       force: true
 
 open-api:
+  key: rioMXaO1vysqM1K3Areg7C+Oswrc9BY2ThDAso11Hisg4hnG/FQJ8Q7H1rrACcvr96jW78z8tTm3RPT389yfjg==
   url:
     inoculation: https://nip.kdca.go.kr/irgd/cov19stats.do?list=all
     inoculation-region: https://nip.kdca.go.kr/irgd/cov19stats.do?list=sido
+    infection: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson
+    infection-region: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson
 
 goodbye-api:
   url:

@@ -1,6 +1,8 @@
 package com.corona.backend.domain.infection.res
 
 import com.corona.backend.infra.goodbye_corona.json.InfectionRegion
+import com.corona.backend.infra.publicdata.xml.infectionRegion.Item
+import com.corona.backend.infra.publicdata.xml.infectionRegion.PublicInfectionRegion
 import com.corona.backend.util.String2IntegerConverter
 
 data class InfectionRegionRes(
@@ -10,6 +12,12 @@ data class InfectionRegionRes(
         fun from(infectionRegion: InfectionRegion): InfectionRegionRes {
             return InfectionRegionRes(
                 infectionRegion.getList().map { InfectionSido.from(it) }
+            )
+        }
+
+        fun from(infectionRegion: PublicInfectionRegion): InfectionRegionRes {
+            return InfectionRegionRes(
+                infectionRegion.body.items.map { InfectionSido.from(it) }
             )
         }
     }
@@ -30,6 +38,16 @@ data class InfectionSido(
                 defCnt = String2IntegerConverter.convert(region.totalCase),
                 isolClearCnt = String2IntegerConverter.convert(region.recovered),
                 deathCnt = String2IntegerConverter.convert(region.death),
+            )
+        }
+
+        fun from(region: Item): InfectionSido {
+            return InfectionSido(
+                gubun = region.gubun,
+                incDec = region.incDec,
+                defCnt = region.defCnt,
+                isolClearCnt = region.isolClearCnt,
+                deathCnt = region.deathCnt
             )
         }
     }

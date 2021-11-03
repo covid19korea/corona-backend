@@ -19,7 +19,7 @@ class GoodbyeCoronaController(
 ) {
 
     @ApiOperation("감염(전국)")
-    @GetMapping("/infection")
+    @GetMapping("/goodbye/infection")
     fun getInfection(
         @RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") date: LocalDate?,
     ): InfectionRes {
@@ -27,7 +27,7 @@ class GoodbyeCoronaController(
     }
 
     @ApiOperation("감염(시/도)")
-    @GetMapping("/infection-region")
+    @GetMapping("/goodbye/infection-region")
     fun getInfectionRegion(
         @RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") date: LocalDate?
     ): InfectionRegionRes {
