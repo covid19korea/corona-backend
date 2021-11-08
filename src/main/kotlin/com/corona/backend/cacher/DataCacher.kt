@@ -6,7 +6,6 @@ import com.corona.backend.infra.publicdata.xml.inoculation.Inoculation
 import com.corona.backend.infra.publicdata.xml.inoculationRegion.InoculationRegion
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-import java.time.ZonedDateTime
 
 @Component
 class DataCacher(
@@ -16,7 +15,7 @@ class DataCacher(
     private val inoculationRegionMap: MutableMap<LocalDate, InoculationRegion> = mutableMapOf(),
 ) {
 
-    //캐싱 로직
+    // 캐싱 로직
     fun cache(date: LocalDate, publicInfection: PublicInfection) {
         infectionMap[date] = publicInfection
     }
@@ -33,7 +32,7 @@ class DataCacher(
         inoculationRegionMap[date] = inoculationRegion
     }
 
-    //반환 로직
+    // 반환 로직
     fun getInfection(date: LocalDate): PublicInfection? {
         return infectionMap[date]
     }
@@ -49,5 +48,4 @@ class DataCacher(
     fun getInoculationRegion(date: LocalDate): InoculationRegion? {
         return inoculationRegionMap[date]
     }
-
 }

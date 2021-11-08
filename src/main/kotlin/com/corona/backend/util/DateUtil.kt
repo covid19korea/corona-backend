@@ -9,7 +9,7 @@ object DateUtil {
 
     private const val SEOUL_TIME_ZONE = "Asia/Seoul"
 
-    //비즈니스 로직
+    // 비즈니스 로직
     fun getDate(): LocalDate {
         val nowSeoul = ZonedDateTime.now(ZoneId.of(SEOUL_TIME_ZONE))
         if (isYesterday(nowSeoul)) {
