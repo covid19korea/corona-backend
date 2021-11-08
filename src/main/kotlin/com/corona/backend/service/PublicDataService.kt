@@ -1,5 +1,6 @@
 package com.corona.backend.service
 
+import com.corona.backend.cacher.DataCacher
 import com.corona.backend.infra.publicdata.PublicDataClient
 import com.corona.backend.infra.publicdata.xml.infection.PublicInfection
 import com.corona.backend.infra.publicdata.xml.infectionRegion.PublicInfectionRegion
@@ -9,9 +10,6 @@ import com.corona.backend.util.DateUtil
 import com.corona.backend.util.XmlParser
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.util.MultiValueMap
-import java.time.LocalDate
 
 @Service
 class PublicDataService(
@@ -19,60 +17,52 @@ class PublicDataService(
     @Value("\${open-api.url.infection-region}") private val infectionRegionUrl: String,
     @Value("\${open-api.url.inoculation}") private val inoculationUrl: String,
     @Value("\${open-api.url.inoculation-region}") private val inoculationRegionUrl: String,
-
     private val dataCacher: DataCacher,
-
     private val publicDataClient: PublicDataClient,
     private val xmlParser: XmlParser,
 ) {
 
-    fun getInfection(date: LocalDate): PublicInfection {
-        var res = dataCacher.getPublicInfection(date)
-        if (res == null) {
-            res = xmlParser.parse(publicDataClient.getData(infectionUrl, getInfectionQueryParam()), PublicInfection::class.java)
-            dataCacher.cachePublicInfection(date, res)
+    fun getInfection(): PublicInfection {
+        val today = DateUtil.getDate()
+        var infection = dataCacher.getInfection(today)
+        if (infection == null) {
+            val xml = publicDataClient.getData(infectionUrl, DateUtil.getQueryParam(1))
+            infection = xmlParser.parse(xml, PublicInfection::class.java)
+            dataCacher.cache(today, infection)
         }
-        return res
+        return infection
     }
 
-    private fun getInfectionQueryParam(): MultiValueMap<String, String> {
-        return LinkedMultiValueMap<String, String>().apply {
-            add("endCreateDt", DateUtil.convert2QueryParam(DateUtil.getDate()))
-            add("startCreateDt", DateUtil.convert2QueryParam(DateUtil.getDate().minusDays(1)))
+    fun getInfectionRegion(): PublicInfectionRegion {
+        val today = DateUtil.getDate()
+        var infectionRegion = dataCacher.getInfectionRegion(today)
+        if (infectionRegion == null) {
+            val xml = publicDataClient.getData(infectionRegionUrl, DateUtil.getQueryParam(0))
+            infectionRegion = xmlParser.parse(xml, PublicInfectionRegion::class.java)
+            dataCacher.cache(today, infectionRegion)
         }
+        return infectionRegion
     }
 
-    fun getInfectionRegion(date: LocalDate): PublicInfectionRegion {
-        var res = dataCacher.getPublicInfectionRegion(date)
-        if (res == null) {
-            res = xmlParser.parse(publicDataClient.getData(infectionRegionUrl, getInfectionRegionQueryParam()), PublicInfectionRegion::class.java)
-            dataCacher.cachePublicInfectionRegion(date, res)
+    fun getInoculation(): Inoculation {
+        val today = DateUtil.getDate()
+        var inoculation = dataCacher.getInoculation(today)
+        if (inoculation == null) {
+            val xml = publicDataClient.getData(inoculationUrl)
+            inoculation = xmlParser.parse(xml, Inoculation::class.java)
+            dataCacher.cache(today, inoculation)
         }
-        return res
+        return inoculation
     }
 
-    private fun getInfectionRegionQueryParam(): MultiValueMap<String, String> {
-        return LinkedMultiValueMap<String, String>().apply {
-            add("endCreateDt", DateUtil.convert2QueryParam(DateUtil.getDate()))
-            add("startCreateDt", DateUtil.convert2QueryParam(DateUtil.getDate()))
+    fun getInoculationRegion(): InoculationRegion {
+        val today = DateUtil.getDate()
+        var inoculationRegion = dataCacher.getInoculationRegion(today)
+        if (inoculationRegion == null) {
+            val xml = publicDataClient.getData(inoculationRegionUrl)
+            inoculationRegion = xmlParser.parse(xml, InoculationRegion::class.java)
+            dataCacher.cache(today, inoculationRegion)
         }
-    }
-
-    fun getInoculation(date: LocalDate): Inoculation {
-        var res = dataCacher.getInoculation(date)
-        if (res == null) {
-            res = xmlParser.parse(publicDataClient.getData(inoculationUrl), Inoculation::class.java)
-            dataCacher.cacheInoculation(date, res)
-        }
-        return res
-    }
-
-    fun getInoculationRegion(date: LocalDate): InoculationRegion {
-        var res = dataCacher.getInoculationRegion(date)
-        if (res == null) {
-            res = xmlParser.parse(publicDataClient.getData(inoculationRegionUrl), InoculationRegion::class.java)
-            dataCacher.cacheInoculationRegion(date, res)
-        }
-        return res
+        return inoculationRegion
     }
 }

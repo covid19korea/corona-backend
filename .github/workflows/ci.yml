@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PORT_NUM: ${{secrets.PORT_NUM}}
-      REDIS_IP: ${{secrets.REDIS_IP}}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
