@@ -11,7 +11,7 @@ data class InoculationRes(
 
 ) {
     companion object {
-        fun from(xml: Inoculation): com.corona.backend.domain.inoculation.res.InoculationRes {
+        fun from(xml: Inoculation): InoculationRes {
             val items = xml.body.items
 
             return InoculationRes(
