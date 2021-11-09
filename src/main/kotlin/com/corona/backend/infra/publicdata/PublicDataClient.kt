@@ -2,12 +2,15 @@ package com.corona.backend.infra.publicdata
 
 import com.corona.backend.exception.PublicDataException
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.util.DefaultUriBuilderFactory
+import reactor.netty.http.client.HttpClient
 import java.net.URLEncoder
+import java.time.Duration
 
 @Component
 class PublicDataClient(
@@ -36,7 +39,11 @@ class PublicDataClient(
     private fun generateWebClient(url: String): WebClient {
         val factory = DefaultUriBuilderFactory(url)
         factory.encodingMode = DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY
-        return WebClient.builder().uriBuilderFactory(factory).baseUrl(url).build()
+        return WebClient.builder()
+            .clientConnector(ReactorClientHttpConnector(HttpClient.create().responseTimeout(Duration.ofSeconds(5))))
+            .uriBuilderFactory(factory)
+            .baseUrl(url)
+            .build()
     }
 
     private fun setSecretKey(queryParam: MultiValueMap<String, String>?): MultiValueMap<String, String> {
