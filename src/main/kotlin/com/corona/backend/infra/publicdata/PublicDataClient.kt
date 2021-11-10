@@ -40,7 +40,7 @@ class PublicDataClient(
         val factory = DefaultUriBuilderFactory(url)
         factory.encodingMode = DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY
         return WebClient.builder()
-            .clientConnector(ReactorClientHttpConnector(HttpClient.create().responseTimeout(Duration.ofSeconds(5))))
+            .clientConnector(ReactorClientHttpConnector(HttpClient.create().responseTimeout(Duration.ofSeconds(10))))
             .uriBuilderFactory(factory)
             .baseUrl(url)
             .build()
