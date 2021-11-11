@@ -33,100 +33,66 @@ class SlackLogAppender(
 
     private fun toSlack(errorLog: ErrorLog?) {
         val slackApi = SlackApi(logConfig.slack.webHookUrl)
+        val fields = generateSlackFields(errorLog)
+        val slackAttachment = generateSlackAttachment(fields, errorLog)
+        val slackMessage = generateSlackMessage(slackAttachment)
 
-        val fields: MutableList<SlackField> = mutableListOf<SlackField>().apply {
-            add(
-                SlackField().apply {
-                    setTitle("에러 내용")
-                    setValue(errorLog?.message)
-                    setShorten(false)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("발생 시간")
-                    setValue(errorLog?.time?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    setShorten(false)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("요청 URI")
-                    setValue(errorLog?.path)
-                    setShorten(false)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("HTTP Header")
-                    setValue(JsonUtil.toPrettyJson(errorLog!!.headerMap!!))
-                    setShorten(true)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("Request Param")
-                    setValue(JsonUtil.toPrettyJson(errorLog!!.parameterMap!!))
-                    setShorten(true)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("HTTP Body")
-                    setValue(
-                        JsonUtil.toPrettyJson(errorLog!!.body!!)
-                            .replace(Regex("(\\\\r\\\\n)|(\\\\n)|(\\\\)| *"), "")
-                            .trim('"')
-                    )
-                    setShorten(false)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("사용자 환경")
-                    setValue(JsonUtil.toPrettyJson(errorLog!!.agentDetail!!))
-                    setShorten(true)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("서버")
-                    setValue(errorLog?.serverName)
-                    setShorten(true)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("서버 호스트")
-                    setValue(errorLog?.hostName)
-                    setShorten(true)
-                }
-            )
-            add(
-                SlackField().apply {
-                    setTitle("사용자 정보")
-                    setValue(JsonUtil.toPrettyJson(errorLog?.userInfo!!))
-                    setShorten(false)
-                }
-            )
+        slackApi.call(slackMessage)
+    }
+
+    private fun generateSlackMessage(slackAttachment: SlackAttachment): SlackMessage {
+        return SlackMessage("").apply {
+            setChannel("#" + logConfig.slack.channel)
+            setUsername("ErrorBot")
+            setIcon(":exclamation:")
+            setAttachments(listOf(slackAttachment))
         }
+    }
 
-        val slackAttachment = SlackAttachment().apply {
+    private fun generateSlackAttachment(fields: MutableList<SlackField>, errorLog: ErrorLog?): SlackAttachment {
+        return SlackAttachment().apply {
             setFallback("서버 에러 발생!")
             setColor("danger")
             setFields(fields)
             setTitle(errorLog!!.message)
             setText(errorLog.trace)
         }
+    }
 
-        val slackMessage = SlackMessage("").apply {
-            setChannel("#" + logConfig.slack.channel)
-            setUsername("ErrorBot")
-            setIcon(":exclamation:")
-            setAttachments(listOf(slackAttachment))
+    private fun generateSlackFields(errorLog: ErrorLog?): MutableList<SlackField> {
+        return mutableListOf<SlackField>().apply {
+            add(generateSlackField("에러 내용", errorLog?.message, false))
+            add(
+                generateSlackField(
+                    "발생 시간",
+                    errorLog?.time?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    false
+                )
+            )
+            add(generateSlackField("요청 URI", errorLog?.path, false))
+            add(generateSlackField("HTTP Header", JsonUtil.toPrettyJson(errorLog!!.headerMap!!), true))
+            add(generateSlackField("Request Param", JsonUtil.toPrettyJson(errorLog.parameterMap!!), true))
+            add(
+                generateSlackField(
+                    "HTTP Body",
+                    JsonUtil.toPrettyJson(errorLog!!.body!!)
+                        .replace(Regex("(\\\\r\\\\n)|(\\\\n)|(\\\\)| *"), "")
+                        .trim('"'),
+                    false
+                )
+            )
+            add(generateSlackField("사용자 환경", JsonUtil.toPrettyJson(errorLog.agentDetail!!), true))
+            add(generateSlackField("서버 호스트", errorLog.hostName, true))
+            add(generateSlackField("사용자 정보", JsonUtil.toPrettyJson(errorLog.userInfo!!), false))
         }
+    }
 
-        slackApi.call(slackMessage)
+    private fun generateSlackField(title: String, value: String?, isShorten: Boolean): SlackField {
+        return SlackField().apply {
+            setTitle(title)
+            setValue(value)
+            setShorten(isShorten)
+        }
     }
 
     fun getErrorLog(loggingEvent: ILoggingEvent): ErrorLog? {
@@ -155,7 +121,7 @@ class SlackLogAppender(
         return null
     }
 
-    fun getHostName(): String? {
+    private fun getHostName(): String? {
         try {
             return ContextUtil.getLocalHostName()
         } catch (e: Exception) {
@@ -164,7 +130,7 @@ class SlackLogAppender(
         return null
     }
 
-    fun getStackTrace(stackTraceElements: Array<StackTraceElementProxy>?): String? {
+    private fun getStackTrace(stackTraceElements: Array<StackTraceElementProxy>?): String? {
         if (stackTraceElements == null || stackTraceElements.isEmpty()) {
             return null
         }
