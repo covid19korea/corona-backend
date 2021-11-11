@@ -21,6 +21,7 @@ class CacheScheduler(
             cacheAll()
         } catch (e: Exception) {
             handleCacheError()
+            throw e
         }
     }
 
