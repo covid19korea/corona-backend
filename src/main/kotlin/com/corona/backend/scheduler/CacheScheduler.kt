@@ -14,6 +14,7 @@ class CacheScheduler(
     @Scheduled(cron = "1 15 1 * * *") // 한국시간기준 오전 10시 15분
     fun cache() {
         cacheTodayData()
+        throw IllegalArgumentException()
     }
 
     private fun cacheTodayData() {
