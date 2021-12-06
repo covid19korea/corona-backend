@@ -19,24 +19,24 @@ class PublicDataController(
     @ApiOperation("감염(전국)")
     @GetMapping("/infection")
     fun getInfection(): InfectionRes {
-        return InfectionRes.from(publicDataService.getInfection())
+        return publicDataService.getInfection()
     }
 
     @ApiOperation("감염(시/도)")
     @GetMapping("/infection-region")
     fun getInfectionRegion(): InfectionRegionRes {
-        return InfectionRegionRes.from(publicDataService.getInfectionRegion())
+        return publicDataService.getInfectionRegion()
     }
 
     @ApiOperation("접종(전국)")
     @GetMapping("/inoculation")
     fun getInoculation(): InoculationRes {
-        return InoculationRes.from(publicDataService.getInoculation())
+        return publicDataService.getInoculation()
     }
 
     @ApiOperation("접종(시/도)")
     @GetMapping("/inoculation-region")
     fun getInoculationRegion(): InoculationRegionRes {
-        return InoculationRegionRes.from(publicDataService.getInoculationRegion())
+        return publicDataService.getInoculationRegion()
     }
 }
