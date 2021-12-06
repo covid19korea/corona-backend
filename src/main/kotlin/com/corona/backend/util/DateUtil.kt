@@ -28,7 +28,7 @@ object DateUtil {
 
     fun getQueryParam(offset: Long): LinkedMultiValueMap<String, String> {
         return LinkedMultiValueMap<String, String>().apply {
-            add("endCreateDt", date2String(getDate()))
+            add("endCreateDt", date2String(getDate(offset - 1)))
             add("startCreateDt", date2String(getDate(offset)))
         }
     }

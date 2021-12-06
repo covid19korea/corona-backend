@@ -1,13 +1,9 @@
 package com.corona.backend.service
 
 import com.corona.backend.cacher.DataCacher
-import com.corona.backend.domain.infection.res.InfectionRegionRes
-import com.corona.backend.domain.infection.res.InfectionRes
 import com.corona.backend.domain.inoculation.res.InoculationRegionRes
 import com.corona.backend.domain.inoculation.res.InoculationRes
 import com.corona.backend.infra.publicdata.PublicDataClient
-import com.corona.backend.infra.publicdata.xml.infection.PublicInfection
-import com.corona.backend.infra.publicdata.xml.infectionRegion.PublicInfectionRegion
 import com.corona.backend.infra.publicdata.xml.inoculation.Inoculation
 import com.corona.backend.infra.publicdata.xml.inoculationRegion.InoculationRegion
 import com.corona.backend.util.DateUtil
@@ -26,27 +22,27 @@ class PublicDataService(
     private val xmlParser: XmlParser,
 ) {
 
-    fun getInfection(): InfectionRes {
-        val today = DateUtil.getDate()
-        var infection = dataCacher.getInfection(today)
-        if (infection == null) {
-            val xml = publicDataClient.getData(infectionUrl, DateUtil.getQueryParam(1))
-            infection = InfectionRes.from(xmlParser.parse(xml, PublicInfection::class.java))
-            dataCacher.cache(today, infection)
-        }
-        return infection
-    }
-
-    fun getInfectionRegion(): InfectionRegionRes {
-        val today = DateUtil.getDate()
-        var infectionRegion = dataCacher.getInfectionRegion(today)
-        if (infectionRegion == null) {
-            val xml = publicDataClient.getData(infectionRegionUrl, DateUtil.getQueryParam(0))
-            infectionRegion = InfectionRegionRes.from(xmlParser.parse(xml, PublicInfectionRegion::class.java))
-            dataCacher.cache(today, infectionRegion)
-        }
-        return infectionRegion
-    }
+//    fun getInfection(): InfectionRes {
+//        val today = DateUtil.getDate()
+//        var infection = dataCacher.getInfection(today)
+//        if (infection == null) {
+//            val xml = publicDataClient.getData(infectionUrl, DateUtil.getQueryParam(2))
+//            infection = InfectionRes.from(xmlParser.parse(xml, PublicInfection::class.java))
+//            dataCacher.cache(today, infection)
+//        }
+//        return infection
+//    }
+//
+//    fun getInfectionRegion(): InfectionRegionRes {
+//        val today = DateUtil.getDate()
+//        var infectionRegion = dataCacher.getInfectionRegion(today)
+//        if (infectionRegion == null) {
+//            val xml = publicDataClient.getData(infectionRegionUrl, DateUtil.getQueryParam(1))
+//            infectionRegion = InfectionRegionRes.from(xmlParser.parse(xml, PublicInfectionRegion::class.java))
+//            dataCacher.cache(today, infectionRegion)
+//        }
+//        return infectionRegion
+//    }
 
     fun getInoculation(): InoculationRes {
         val today = DateUtil.getDate()

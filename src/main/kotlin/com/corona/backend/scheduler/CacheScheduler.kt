@@ -3,6 +3,7 @@ package com.corona.backend.scheduler
 import com.corona.backend.cacher.DataCacher
 import com.corona.backend.errorbot.configs.LogConfig
 import com.corona.backend.errorbot.entity.ErrorLog
+import com.corona.backend.service.GoodbyeCoronaService
 import com.corona.backend.service.PublicDataService
 import com.corona.backend.util.DateUtil
 import net.gpedro.integrations.slack.SlackApi
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class CacheScheduler(
+    private val goodbyeCoronaService: GoodbyeCoronaService,
     private val publicDataService: PublicDataService,
     private val dataCacher: DataCacher,
     private val logConfig: LogConfig,
@@ -33,8 +35,8 @@ class CacheScheduler(
     }
 
     private fun cacheAll() {
-        publicDataService.getInfection()
-        publicDataService.getInfectionRegion()
+        goodbyeCoronaService.getInfection()
+        goodbyeCoronaService.getInfectionRegion()
         publicDataService.getInoculation()
         publicDataService.getInoculationRegion()
     }

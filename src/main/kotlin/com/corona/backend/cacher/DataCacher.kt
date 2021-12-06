@@ -1,23 +1,23 @@
 package com.corona.backend.cacher
 
 import com.corona.backend.domain.infection.res.InfectionRegionRes
-import com.corona.backend.domain.infection.res.InfectionRes
 import com.corona.backend.domain.inoculation.res.InoculationRegionRes
 import com.corona.backend.domain.inoculation.res.InoculationRes
+import com.corona.backend.infra.goodbye_corona.json.Infection
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 @Component
 class DataCacher(
-    private val infectionMap: MutableMap<LocalDate, InfectionRes> = mutableMapOf(),
+    private val infectionMap: MutableMap<LocalDate, Infection?> = mutableMapOf(),
     private val infectionRegionMap: MutableMap<LocalDate, InfectionRegionRes> = mutableMapOf(),
     private val inoculationMap: MutableMap<LocalDate, InoculationRes> = mutableMapOf(),
     private val inoculationRegionMap: MutableMap<LocalDate, InoculationRegionRes> = mutableMapOf(),
 ) {
 
     // 캐싱 로직
-    fun cache(date: LocalDate, infectionRes: InfectionRes) {
-        infectionMap[date] = infectionRes
+    fun cache(date: LocalDate, infection: Infection?) {
+        infectionMap[date] = infection
     }
 
     fun cache(date: LocalDate, infectionRegionRes: InfectionRegionRes) {
@@ -33,7 +33,7 @@ class DataCacher(
     }
 
     // 반환 로직
-    fun getInfection(date: LocalDate): InfectionRes? {
+    fun getInfection(date: LocalDate): Infection? {
         return infectionMap[date]
     }
 
