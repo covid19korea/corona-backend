@@ -14,6 +14,11 @@ open-api:
     infection: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson
     infection-region: http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson
 
+goodbye-api:
+  url:
+    infection: https://api.corona-19.kr/korea/?serviceKey=x8TrC5z7ZWsqlOKEfAwvc6P4YhMo3RVdy
+    infection-region: https://api.corona-19.kr/korea/country/new/?serviceKey=x8TrC5z7ZWsqlOKEfAwvc6P4YhMo3RVdy
+
 log:
   level: ERROR
   slack:

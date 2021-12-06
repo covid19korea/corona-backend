@@ -20,18 +20,18 @@ data class Body(
 )
 
 data class Item(
-    var accDefRate: Double = 0.0,
-    var accExamCnt: Int = 0,
-    var accExamCompCnt: Int = 0,
-    var careCnt: Int = 0,
-    var clearCnt: Int = 0,
-    var createDt: String = "",
-    var deathCnt: Int = 0,
-    var decideCnt: Int = 0,
-    var examCnt: Int = 0,
-    var resutlNegCnt: Int = 0,
-    var seq: Int = 0,
-    var stateDt: Int = 0,
-    var stateTime: String = "",
-    var updateDt: String = "",
+//    var accDefRate: Double = 0.0,
+    var accExamCnt: Int = 0, //
+//    var accExamCompCnt: Int = 0,
+//    var careCnt: Int = 0,
+//    var clearCnt: Int = 0,
+    var createDt: String = "", //
+    var deathCnt: Int = 0, //
+    var decideCnt: Int = 0, //
+//    var examCnt: Int = 0,
+//    var resutlNegCnt: Int = 0,
+    var seq: Int = 0, //
+    var stateDt: Int = 0, //
+    var stateTime: String = "", //
+    var updateDt: String = "", //
 )
