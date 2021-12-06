@@ -21,9 +21,9 @@ class PublicDataClient(
     @Value("\${open-api.key}") private val secretKey: String,
 ) {
 
-    private val CUSTOM_CONNECTION_TIMEOUT_MILLS = 10000
-    private val CUSTOM_READ_TIMEOUT_MILLS = 10000L
-    private val CUSTOM_WRITE_TIMEOUT_MILLS = 10000L
+    private val CUSTOM_CONNECTION_TIMEOUT_MILLS = 15000
+    private val CUSTOM_READ_TIMEOUT_MILLS = 15000L
+    private val CUSTOM_WRITE_TIMEOUT_MILLS = 15000L
 
     fun getData(url: String, queryParam: MultiValueMap<String, String>?): String {
         val webClient = generateWebClient(url)
